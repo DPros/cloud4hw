@@ -48,7 +48,7 @@ public class ConferenceApi {
 
     // TODO 1 Pass the ProfileForm parameter
     // TODO 2 Pass the User parameter
-    public Profile saveProfile() throws UnauthorizedException {
+    public Profile saveProfile(ProfileForm profileForm, User user) throws UnauthorizedException {
 
         String userId = null;
         String mainEmail = null;
@@ -57,22 +57,22 @@ public class ConferenceApi {
 
         // TODO 2
         // If the user is not logged in, throw an UnauthorizedException
-
+        if(user == null)throw new UnauthorizedException("You are not logged in");
         // TODO 1
         // Set the teeShirtSize to the value sent by the ProfileForm, if sent
         // otherwise leave it as the default value
-
+        teeShirtSize = profileForm.getTeeShirtSize();
         // TODO 1
         // Set the displayName to the value sent by the ProfileForm, if sent
         // otherwise set it to null
-
+        displayName = profileForm.getDisplayName();
         // TODO 2
         // Get the userId and mainEmail
-
+        userId = user.getUserId();
         // TODO 2
         // If the displayName is null, set it to default value based on the user's email
         // by calling extractDefaultDisplayNameFromEmail(...)
-
+        if(displayName == null)displayName = extractDefaultDisplayNameFromEmail(user.getEmail());
         // Create a new Profile entity from the
         // userId, displayName, mainEmail and teeShirtSize
         Profile profile = new Profile(userId, displayName, mainEmail, teeShirtSize);
@@ -99,7 +99,7 @@ public class ConferenceApi {
         if (user == null) {
             throw new UnauthorizedException("Authorization required");
         }
-
+        
         // TODO
         // load the Profile Entity
         String userId = ""; // TODO
